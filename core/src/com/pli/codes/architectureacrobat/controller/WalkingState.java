@@ -6,26 +6,34 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.pli.codes.architectureacrobat.AnimationData;
 
-public class StandingState implements PlayerState {
+public class WalkingState implements PlayerState {
+
+    //TODO: write config into a class/config file
+    public static final float WALK_SPEED = 150f; // Adjust as needed
 
     private final PlayerController playerController;
 
     private float stateTime = 0;
 
-    public StandingState(PlayerController playerController) {
-        playerController.setMoving(false);
+    public WalkingState(PlayerController playerController) {
+        playerController.setMoving(true);
         this.playerController = playerController;
     }
 
     @Override
     public void update(float delta) {
-        // Logic for standing state update
+        // Update the player's horizontal position based on walking speed
+        float newX = playerController.getX() + WALK_SPEED * delta * playerController.getDirection();
+        // Ensure the player stays within the screen bounds
+        if (newX >= 0 && newX <= Gdx.graphics.getWidth()) {
+            playerController.setX(newX);
+        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
         stateTime += Gdx.graphics.getDeltaTime();
-        TextureRegion currentFrame = AnimationData.IDLE.getAnimation().getKeyFrame(stateTime, true);
+        TextureRegion currentFrame = AnimationData.RUN.getAnimation().getKeyFrame(stateTime, true);
         if (currentFrame.isFlipX() != (playerController.getDirection() == -1)) {
             currentFrame.flip(true, false);
         }
@@ -34,13 +42,11 @@ public class StandingState implements PlayerState {
 
     @Override
     public void handleInput(int keycode, boolean isKeyDown) {
-        // Handle input for standing state
-        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
-            // Transition to jumping state
-            playerController.setCurrentState(new JumpingState(playerController));
-        } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S) {
-            // Transition to ducking state
-            playerController.setCurrentState(new DuckingState(playerController));
+        if (!isKeyDown && playerController.getDirection() == 1 && (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D)) {
+            playerController.setCurrentState(new StandingState(playerController));
+        } else if (!isKeyDown && playerController.getDirection() == -1 && (keycode == Input.Keys.LEFT || keycode == Input.Keys.A)) {
+            // Transition to walking state
+            playerController.setCurrentState(new StandingState(playerController));
         } else if (isKeyDown && (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D)) {
             playerController.setDirection(1);
             // Transition to walking state
@@ -49,6 +55,9 @@ public class StandingState implements PlayerState {
             playerController.setDirection(-1);
             // Transition to walking state
             playerController.setCurrentState(new WalkingState(playerController));
+        } else if (isKeyDown && (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W)) {
+            // Transition to jumping state
+            playerController.setCurrentState(new JumpingState(playerController));
         }
     }
 }

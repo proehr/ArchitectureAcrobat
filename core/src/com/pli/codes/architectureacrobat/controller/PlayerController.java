@@ -19,6 +19,8 @@ public class PlayerController extends InputAdapter {
     private float x, y;
     // Vertical velocity
     private float velocityY;
+    private int direction;
+    private boolean moving;
     private boolean isJumping;
     private boolean isDucking;
 
@@ -48,8 +50,13 @@ public class PlayerController extends InputAdapter {
 
     @Override
     public boolean keyDown(int keycode) {
-        currentState.handleInput(keycode);
+        currentState.handleInput(keycode, true);
         return true;
     }
 
+    @Override
+    public boolean keyUp(int keycode) {
+        currentState.handleInput(keycode, false);
+        return true;
+    }
 }

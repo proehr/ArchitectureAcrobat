@@ -8,5 +8,5 @@ public interface PlayerState {
 
     void render(SpriteBatch batch);
 
-    void handleInput(int keycode);
+    void handleInput(int keycode, boolean isKeyDown);
 }
