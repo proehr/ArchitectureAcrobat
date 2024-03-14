@@ -1,7 +1,6 @@
 package com.pli.codes.architectureacrobat.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.pli.codes.architectureacrobat.AnimationData;
@@ -19,7 +18,6 @@ public class StandingState implements PlayerState {
 
     @Override
     public void update(float delta) {
-        // Logic for standing state update
     }
 
     @Override
@@ -34,21 +32,5 @@ public class StandingState implements PlayerState {
 
     @Override
     public void handleInput(int keycode, boolean isKeyDown) {
-        // Handle input for standing state
-        if (keycode == Input.Keys.SPACE || keycode == Input.Keys.UP || keycode == Input.Keys.W) {
-            // Transition to jumping state
-            playerController.setCurrentState(new JumpingState(playerController));
-        } else if (keycode == Input.Keys.DOWN || keycode == Input.Keys.S) {
-            // Transition to ducking state
-            playerController.setCurrentState(new DuckingState(playerController));
-        } else if (isKeyDown && (keycode == Input.Keys.RIGHT || keycode == Input.Keys.D)) {
-            playerController.setDirection(1);
-            // Transition to walking state
-            playerController.setCurrentState(new WalkingState(playerController));
-        } else if (isKeyDown && (keycode == Input.Keys.LEFT || keycode == Input.Keys.A)) {
-            playerController.setDirection(-1);
-            // Transition to walking state
-            playerController.setCurrentState(new WalkingState(playerController));
-        }
     }
 }

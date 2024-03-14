@@ -3,14 +3,14 @@ package com.pli.codes.architectureacrobat;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.pli.codes.architectureacrobat.controller.PlayerController;
+import com.pli.codes.architectureacrobat.input.InputHandler;
 
 public class GameApplication extends ApplicationAdapter {
 
     private PlayerController playerController;
+    private InputHandler inputHandler;
 
     private SpriteBatch batch;
 
@@ -18,14 +18,10 @@ public class GameApplication extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
 
-        // Load your player textures here
-        TextureRegion standingTexture = new TextureRegion(new Texture("standing_texture.png"));
-        TextureRegion jumpingTexture = new TextureRegion(new Texture("jumping_texture.png"));
-        TextureRegion duckingTexture = new TextureRegion(new Texture("ducking_texture.png"));
-
         // Initialize the player controller
-        playerController = new PlayerController(standingTexture, jumpingTexture, duckingTexture);
-        Gdx.input.setInputProcessor(playerController);
+        playerController = new PlayerController();
+        inputHandler = new InputHandler(playerController);
+        Gdx.input.setInputProcessor(inputHandler);
     }
 
     @Override
@@ -35,6 +31,7 @@ public class GameApplication extends ApplicationAdapter {
 
         // Update and render the player controller
         float delta = Gdx.graphics.getDeltaTime();
+        inputHandler.update();
         playerController.update(delta);
 
         batch.begin();
