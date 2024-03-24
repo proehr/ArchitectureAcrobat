@@ -18,6 +18,11 @@ public class StandingState implements PlayerState {
 
     @Override
     public void update(float delta) {
+        playerController.setVelocityY(playerController.getVelocityY() + PlayerController.GRAVITY * delta);
+        playerController.setY(playerController.getCharacterBounds().getY() + playerController.getVelocityY() * delta);
+        if (playerController.getVelocityY() < 0) {
+            playerController.setCurrentState(new JumpingState(playerController, false));
+        }
     }
 
     @Override
@@ -27,7 +32,8 @@ public class StandingState implements PlayerState {
         if (currentFrame.isFlipX() != (playerController.getDirection() == -1)) {
             currentFrame.flip(true, false);
         }
-        batch.draw(currentFrame, playerController.getX(), playerController.getY());
+        batch.draw(currentFrame, playerController.getCharacterBounds().getX() - 25,
+            playerController.getCharacterBounds().getY(), 100, 74);
     }
 
     @Override

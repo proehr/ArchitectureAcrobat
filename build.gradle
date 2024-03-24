@@ -90,6 +90,8 @@ project(":core") {
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
 
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+
         compileOnly "org.projectlombok:lombok:1.18.20"
         annotationProcessor "org.projectlombok:lombok:1.18.20"
     }

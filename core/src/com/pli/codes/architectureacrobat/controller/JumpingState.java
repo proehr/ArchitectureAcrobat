@@ -7,43 +7,45 @@ import com.pli.codes.architectureacrobat.AnimationData;
 
 public class JumpingState implements PlayerState {
 
-    private static final float JUMP_VELOCITY = 250F;
-    private static final float GRAVITY = -500F;
+    private static final float JUMP_VELOCITY = 550F;
 
     private final PlayerController playerController;
 
     private float stateTimeJump = 0;
     private float stateTimeFall = 0;
 
-    public JumpingState(PlayerController playerController) {
+    public JumpingState(PlayerController playerController, boolean jumpPressed) {
         this.playerController = playerController;
         playerController.setJumping(true);
-        playerController.setVelocityY(JUMP_VELOCITY);
+        if (jumpPressed) {
+            playerController.setVelocityY(JUMP_VELOCITY);
+        } else {
+            stateTimeJump = AnimationData.JUMP.getAnimation().getFrameDuration();
+        }
     }
 
     @Override
     public void update(float delta) {
-        // Update the player's vertical position based on velocity and gravity
-        if (stateTimeJump >= AnimationData.FRAME_DURATION) {
-            playerController.setY(playerController.getY() + playerController.getVelocityY() * delta);
+        playerController.setVelocityY(playerController.getVelocityY() + PlayerController.GRAVITY * delta);
+        playerController.setY(
+            playerController.getCharacterBounds().getY() + playerController.getVelocityY() * delta
+        );
 
-            // Apply gravity to simulate downward acceleration
-            playerController.setVelocityY(playerController.getVelocityY() + GRAVITY * delta);
+        // Check if the player has reached the ground level
+        if (!playerController.isJumping()) {
+            playerController.setVelocityY(0);
+            playerController.setJumping(false);
 
-            // Check if the player has reached the ground level
-            if (playerController.getY() <= 0) {
-                playerController.setY(0);
-                playerController.setVelocityY(0);
-                playerController.setJumping(false);
-
-                // Transition to standing state when landing
-                playerController.setCurrentState(
-                    playerController.isMoving() ? new WalkingState(playerController) : new StandingState(playerController)
-                );
-            }
+            // Transition to standing state when landing
+            playerController.setCurrentState(
+                playerController.isMoving() ? new WalkingState(playerController)
+                    : new StandingState(playerController)
+            );
         }
+
         if (playerController.isMoving()) {
-            float newX = playerController.getX() + WalkingState.WALK_SPEED * delta * playerController.getDirection();
+            float newX = playerController.getCharacterBounds().getX()
+                + WalkingState.WALK_SPEED * delta * playerController.getDirection();
             if (newX >= 0 && newX <= Gdx.graphics.getWidth()) {
                 playerController.setX(newX);
             }
@@ -53,7 +55,6 @@ public class JumpingState implements PlayerState {
 
     @Override
     public void render(SpriteBatch batch) {
-
         TextureRegion currentFrame;
         if (playerController.getVelocityY() >= 0) {
             stateTimeJump += Gdx.graphics.getDeltaTime();
@@ -65,7 +66,8 @@ public class JumpingState implements PlayerState {
         if (currentFrame.isFlipX() != (playerController.getDirection() == -1)) {
             currentFrame.flip(true, false);
         }
-        batch.draw(currentFrame, playerController.getX(), playerController.getY());
+        batch.draw(currentFrame, playerController.getCharacterBounds().getX() - 25,
+            playerController.getCharacterBounds().getY(), 100, 74);
     }
 
     @Override

@@ -6,17 +6,16 @@ import lombok.Getter;
 
 @Getter
 public enum AnimationData {
-    IDLE(SpriteSheet.PLAYER_ONE, 0, 3),
-    CROUCH(SpriteSheet.PLAYER_ONE, 4, 7),
-    RUN(SpriteSheet.PLAYER_ONE, 8, 13),
-    JUMP(SpriteSheet.PLAYER_ONE, 14, 17),
-    FALL(SpriteSheet.PLAYER_ONE, 22, 23),
+    IDLE(SpriteSheet.PLAYER_ONE, 0, 3, 0.4f),
+    CROUCH(SpriteSheet.PLAYER_ONE, 4, 7, 0.25f),
+    RUN(SpriteSheet.PLAYER_ONE, 8, 13, 0.2f),
+    JUMP(SpriteSheet.PLAYER_ONE, 16, 17, 0.2f),
+    FALL(SpriteSheet.PLAYER_ONE, 22, 23, 0.2f),
     ;
 
-    public static final float FRAME_DURATION = 0.25f;
     private final Animation<TextureRegion> animation;
 
-    AnimationData(SpriteSheet spriteSheet, int startFrame, int endFrame) {
-        animation = new Animation<>(FRAME_DURATION, spriteSheet.getFrames(startFrame, endFrame));
+    AnimationData(SpriteSheet spriteSheet, int startFrame, int endFrame, float frameDuration) {
+        animation = new Animation<>(frameDuration, spriteSheet.getFrames(startFrame, endFrame));
     }
 }
