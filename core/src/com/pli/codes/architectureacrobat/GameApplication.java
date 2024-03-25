@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pli.codes.architectureacrobat.controller.PlayerController;
 import com.pli.codes.architectureacrobat.input.InputHandler;
+import com.pli.codes.architectureacrobat.level.Level;
 import com.pli.codes.architectureacrobat.level.LevelData;
 import java.io.IOException;
 
@@ -23,7 +24,7 @@ public class GameApplication extends ApplicationAdapter {
     private Viewport viewport;
     private Camera camera;
     private Texture backgroundTexture;
-    private LevelData currentLevel;
+    private Level currentLevel;
 
     @Override
     public void create() {
@@ -33,8 +34,9 @@ public class GameApplication extends ApplicationAdapter {
 
         backgroundTexture = new Texture("background.png");
         try {
-            currentLevel = new ObjectMapper().readValue(Gdx.files.internal("data/").child("level1.json").read(),
+            LevelData levelData = new ObjectMapper().readValue(Gdx.files.internal("data/").child("level0.json").read(),
                 LevelData.class);
+            currentLevel = new Level(levelData);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -43,6 +45,7 @@ public class GameApplication extends ApplicationAdapter {
 
         // Initialize the player controller
         playerController = new PlayerController(currentLevel);
+        playerController.getOnPositionChange().addPropertyChangeListener(currentLevel.getLevelData().getTarget());
         inputHandler = new InputHandler(playerController);
         Gdx.input.setInputProcessor(inputHandler);
     }
@@ -66,7 +69,7 @@ public class GameApplication extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        currentLevel.renderPlatforms(batch);
+        currentLevel.render(batch);
         playerController.render(batch);
         batch.end();
     }

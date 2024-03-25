@@ -9,6 +9,7 @@ import lombok.Getter;
 public enum SpriteSheet {
     PLAYER_ONE("animation-sheet-1.png", 7, 16),
     PLAYER_TWO("animation-sheet-2.png", 7, 10),
+    LEVEL_TARGET("Entry.png", 8, 1),
     ;
 
     private final Texture sheetTexture;
@@ -29,7 +30,9 @@ public enum SpriteSheet {
     }
 
     public TextureRegion[] getFrames(int startFrame, int endFrame) {
-        return new TextureRegion[]{frames[startFrame], frames[endFrame]};
+        TextureRegion[] region = new TextureRegion[endFrame - startFrame + 1];
+        System.arraycopy(frames, startFrame, region, 0, region.length);
+        return region;
     }
 
 }

@@ -2,7 +2,8 @@ package com.pli.codes.architectureacrobat.controller;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.pli.codes.architectureacrobat.level.LevelData;
+import com.pli.codes.architectureacrobat.level.Level;
+import java.beans.PropertyChangeSupport;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ public class PlayerController {
     public static final float GRAVITY = -1000F;
 
     private PlayerState currentState;
-    private LevelData currentLevel;
+    private Level currentLevel;
 
     // Player position
     private Rectangle characterBounds;
@@ -23,10 +24,14 @@ public class PlayerController {
     private boolean moving;
     private boolean isJumping;
 
-    public PlayerController(LevelData currentLevel) {
-        this.characterBounds = new Rectangle(currentLevel.getPlayerStartX(), currentLevel.getPlayerStartY(), 50, 63);
+    @Getter
+    private PropertyChangeSupport onPositionChange = new PropertyChangeSupport(this);
+
+    public PlayerController(Level currentLevel) {
+        this.characterBounds = new Rectangle(currentLevel.getLevelData().getPlayerStartX(),
+            currentLevel.getLevelData().getPlayerStartY(), 50, 63);
         this.currentLevel = currentLevel;
-        currentState = new StandingState(this);
+        this.currentState = new StandingState(this);
     }
 
     public void update(float delta) {
@@ -89,6 +94,7 @@ public class PlayerController {
                 }
             }
         }
+        onPositionChange.firePropertyChange("posChanged", null, characterBounds);
     }
 
     public void setY(float y) {
@@ -104,5 +110,6 @@ public class PlayerController {
                 velocityY = 0;
             }
         }
+        onPositionChange.firePropertyChange("posChanged", null, characterBounds);
     }
 }
