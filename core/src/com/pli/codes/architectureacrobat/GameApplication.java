@@ -33,7 +33,8 @@ public class GameApplication extends ApplicationAdapter {
 
         backgroundTexture = new Texture("background.png");
         try {
-            currentLevel = new ObjectMapper().readValue(Gdx.files.internal("data/level1.json").file(), LevelData.class);
+            currentLevel = new ObjectMapper().readValue(Gdx.files.internal("data/").child("level1.json").read(),
+                LevelData.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
