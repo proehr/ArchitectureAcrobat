@@ -2,8 +2,9 @@ package com.pli.codes.architectureacrobat.controller;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.pli.codes.architectureacrobat.level.Level;
 import java.beans.PropertyChangeSupport;
+import java.util.Arrays;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +13,12 @@ import lombok.Setter;
 public class PlayerController {
 
     public static final float GRAVITY = -1000F;
+    private List<Rectangle> platforms;
+
+    @Getter
+    private PropertyChangeSupport onPositionChange = new PropertyChangeSupport(this);
 
     private PlayerState currentState;
-    private Level currentLevel;
 
     // Player position
     private Rectangle characterBounds;
@@ -24,13 +28,16 @@ public class PlayerController {
     private boolean moving;
     private boolean isJumping;
 
-    @Getter
-    private PropertyChangeSupport onPositionChange = new PropertyChangeSupport(this);
+    public PlayerController() {
+        this.characterBounds = new Rectangle(0, 0, 50, 63);
+        this.currentState = new StandingState(this);
+    }
 
-    public PlayerController(Level currentLevel) {
-        this.characterBounds = new Rectangle(currentLevel.getLevelData().getPlayerStartX(),
-            currentLevel.getLevelData().getPlayerStartY(), 50, 63);
-        this.currentLevel = currentLevel;
+    public void reset(float startX, float startY, List<Rectangle> platforms) {
+        Arrays.stream(onPositionChange.getPropertyChangeListeners()).forEach(onPositionChange::removePropertyChangeListener);
+        this.platforms = platforms;
+        this.characterBounds.x = startX;
+        this.characterBounds.y = startY;
         this.currentState = new StandingState(this);
     }
 
@@ -38,8 +45,8 @@ public class PlayerController {
         currentState.update(delta);
     }
 
-    public void render(SpriteBatch batch) {
-        currentState.render(batch);
+    public void render(SpriteBatch batch, float delta) {
+        currentState.render(batch, delta);
     }
 
     public void jump() {
@@ -85,7 +92,7 @@ public class PlayerController {
 
     public void setX(float x) {
         characterBounds.x = x;
-        for (Rectangle rectangle : currentLevel.getScaledPlatforms()) {
+        for (Rectangle rectangle : platforms) {
             if (characterBounds.overlaps(rectangle)) {
                 if (direction < 0) {
                     characterBounds.x = (int) (rectangle.x + rectangle.width + 0.01f);
@@ -99,7 +106,7 @@ public class PlayerController {
 
     public void setY(float y) {
         characterBounds.y = y;
-        for (Rectangle rectangle : currentLevel.getScaledPlatforms()) {
+        for (Rectangle rectangle : platforms) {
             if (characterBounds.overlaps(rectangle)) {
                 if (velocityY < 0) {
                     characterBounds.y = (int) (rectangle.y + rectangle.height + 0.01f);

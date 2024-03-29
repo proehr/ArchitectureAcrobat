@@ -1,6 +1,16 @@
 {
   "playerStartX": 0,
   "playerStartY": 32,
+  "target": {
+    "type": "target",
+    "bounds": {
+      "x": 57,
+      "y": 28,
+      "width": 2,
+      "height": 3
+    }
+  },
+  "interactables": [],
   "platforms": [
     {
       "x": 0,

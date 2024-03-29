@@ -6,7 +6,7 @@ public interface PlayerState {
 
     void update(float delta);
 
-    void render(SpriteBatch batch);
+    void render(SpriteBatch batch, float delta);
 
     void handleInput(int keycode, boolean isKeyDown);
 }

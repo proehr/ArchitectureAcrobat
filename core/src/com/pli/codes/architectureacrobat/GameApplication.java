@@ -9,22 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pli.codes.architectureacrobat.controller.PlayerController;
 import com.pli.codes.architectureacrobat.input.InputHandler;
-import com.pli.codes.architectureacrobat.level.Level;
-import com.pli.codes.architectureacrobat.level.LevelData;
-import java.io.IOException;
+import com.pli.codes.architectureacrobat.level.LevelManager;
 
 public class GameApplication extends ApplicationAdapter {
 
+    private LevelManager levelManager;
     private PlayerController playerController;
     private InputHandler inputHandler;
     private SpriteBatch batch;
     private Viewport viewport;
     private Camera camera;
     private Texture backgroundTexture;
-    private Level currentLevel;
 
     @Override
     public void create() {
@@ -33,21 +30,19 @@ public class GameApplication extends ApplicationAdapter {
         viewport = new FitViewport(1920, 1080, camera);
 
         backgroundTexture = new Texture("background.png");
-        try {
-            LevelData levelData = new ObjectMapper().readValue(Gdx.files.internal("data/").child("level0.json").read(),
-                LevelData.class);
-            currentLevel = new Level(levelData);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         batch = new SpriteBatch();
 
         // Initialize the player controller
-        playerController = new PlayerController(currentLevel);
-        playerController.getOnPositionChange().addPropertyChangeListener(currentLevel.getLevelData().getTarget());
+        playerController = new PlayerController();
+
+        // Initialize input
         inputHandler = new InputHandler(playerController);
         Gdx.input.setInputProcessor(inputHandler);
+
+        // Initialize level manager
+        levelManager = new LevelManager(playerController);
+
     }
 
     @Override
@@ -69,8 +64,8 @@ public class GameApplication extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        currentLevel.render(batch);
-        playerController.render(batch);
+        levelManager.getCurrentLevel().render(batch, delta);
+        playerController.render(batch, delta);
         batch.end();
     }
 

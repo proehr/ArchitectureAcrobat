@@ -1,4 +1,4 @@
-package com.pli.codes.architectureacrobat;
+package com.pli.codes.architectureacrobat.animation;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

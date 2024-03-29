@@ -2,27 +2,31 @@ package com.pli.codes.architectureacrobat.level;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pli.codes.architectureacrobat.interaction.Interactable;
 import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class LevelData {
+public class LevelInitData {
 
     private final float playerStartX;
     private final float playerStartY;
-    private final Target target;
     private final List<Rectangle> platforms;
+    private final Target target;
+    private final List<Interactable> interactables;
 
-    public LevelData(
+    public LevelInitData(
         @JsonProperty("playerStartX") float playerStartX,
         @JsonProperty("playerStartY") float playerStartY,
-        @JsonProperty("target") Rectangle target,
-        @JsonProperty("platforms") List<Rectangle> platforms
+        @JsonProperty("platforms") List<Rectangle> platforms,
+        @JsonProperty("target") Target target,
+        @JsonProperty("interactables") List<Interactable> interactables
     ) {
         this.playerStartX = playerStartX;
         this.playerStartY = playerStartY;
-        this.target = new Target(target);
         this.platforms = platforms;
+        this.target = target;
+        this.interactables = interactables;
     }
 
 }

@@ -2,62 +2,47 @@ package com.pli.codes.architectureacrobat.level;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.pli.codes.architectureacrobat.interaction.Interactable;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lombok.Getter;
 
-public class Level {
-
-    private static final Map<Integer, Texture> PLATFORM_TEXTURES = new HashMap<>();
-
-    static {
-        for (int i = 1; i < 10; i++) {
-            PLATFORM_TEXTURES.put(i, new Texture("platforms/IndustrialTile_0" + i + ".png"));
-        }
-        for (int i = 10; i <= 81; i++) {
-            PLATFORM_TEXTURES.put(i, new Texture("platforms/IndustrialTile_" + i + ".png"));
-        }
-    }
+public class Level implements PropertyChangeListener {
 
     @Getter
-    private final List<Rectangle> scaledPlatforms = new ArrayList<>();
-    private final Map<Vector2, Texture> platformTextures = new HashMap<>();
-    @Getter
-    private final LevelData levelData;
+    private LevelGameData levelData;
+    private final Map<Vector2, Texture> platformTextures;
 
-    public Level(LevelData levelData) {
-        this.levelData = levelData;
-        preparePlatformTextures(levelData.getPlatforms());
-        prepareScaledPlatforms(levelData.getPlatforms());
+
+    public Level(LevelInitData levelInitData) {
+        platformTextures = PlatformUtil.preparePlatformTextures(levelInitData.getPlatforms());
+        levelData = new LevelGameData(
+            levelInitData.getPlayerStartX(),
+            levelInitData.getPlayerStartY(),
+            PlatformUtil.prepareScaledPlatforms(levelInitData.getPlatforms()),
+            levelInitData.getTarget(),
+            new ArrayList<>(levelInitData.getInteractables())
+        );
     }
 
-    private void prepareScaledPlatforms(List<Rectangle> platforms) {
-        for (Rectangle platform : platforms) {
-            scaledPlatforms.add(
-                new Rectangle(platform.x * 32, platform.y * 32, platform.width * 32, platform.height * 32));
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (levelData.getTarget().detectInteraction(evt.getNewValue())) {
+            levelData.getTarget().handleInteraction();
         }
+        levelData.getInteractables().stream()
+            .filter(interactable -> interactable.detectInteraction(evt.getNewValue()))
+            .forEach(Interactable::handleInteraction);
     }
 
-    private void preparePlatformTextures(List<Rectangle> platforms) {
-        for (Rectangle platform : platforms) {
-            for (int x = 0; x < platform.getWidth(); x++) {
-                for (int y = 0; y < platform.getHeight(); y++) {
-                    float xPos = (platform.x + x) * 32;
-                    float yPos = (platform.y + y) * 32;
-                    int textureId = selectTexture(x, y, (int) platform.getWidth(), (int) platform.getHeight());
-                    platformTextures.put(new Vector2(xPos, yPos), PLATFORM_TEXTURES.get(textureId));
-                }
-            }
-        }
-    }
-
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, float delta) {
         renderPlatforms(batch);
-        levelData.getTarget().render(batch);
+        levelData.getTarget().render(batch, delta);
+        levelData.getInteractables().forEach(interactable -> interactable.render(batch, delta));
     }
 
     private void renderPlatforms(SpriteBatch batch) {
@@ -66,51 +51,5 @@ public class Level {
         }
     }
 
-    private int selectTexture(int x, int y, int platformAmountX, int platformAmountY) {
-        if (platformAmountX == 1) {
-            if (y == 0) {
-                return PlatformType.SINGLE_COLUMN_BOTTOM.getTextureId();
-            }
-            if (y == platformAmountY - 1) {
-                return PlatformType.SINGLE_COLUMN_TOP.getTextureId();
-            }
-            return PlatformType.SINGLE_COLUMN_CENTER.getTextureId();
-        }
-        if (platformAmountY == 1) {
-            if (x == 0) {
-                return PlatformType.SINGLE_ROW_LEFT.getTextureId();
-            }
-            if (x == platformAmountX - 1) {
-                return PlatformType.SINGLE_ROW_RIGHT.getTextureId();
-            }
-            return PlatformType.SINGLE_ROW_CENTER.getTextureId();
-        }
-        if (x == 0 && y == 0) {
-            return PlatformType.BOTTOM_LEFT_CORNER.getTextureId();
-        }
-        if (x == platformAmountX - 1 && y == 0) {
-            return PlatformType.BOTTOM_RIGHT_CORNER.getTextureId();
-        }
-        if (x == 0 && y == platformAmountY - 1) {
-            return PlatformType.TOP_LEFT_CORNER.getTextureId();
-        }
-        if (x == platformAmountX - 1 && y == platformAmountY - 1) {
-            return PlatformType.TOP_RIGHT_CORNER.getTextureId();
-        }
-        if (x == 0) {
-            return PlatformType.LEFT_EDGE.getTextureId();
-        }
-        if (x == platformAmountX - 1) {
-            return PlatformType.RIGHT_EDGE.getTextureId();
-        }
-        if (y == 0) {
-            return PlatformType.BOTTOM_EDGE.getTextureId();
-        }
-        if (y == platformAmountY - 1) {
-            return PlatformType.TOP_EDGE.getTextureId();
-        }
-        return PlatformType.CENTER.getTextureId();
-
-    }
 
 }

@@ -1,9 +1,8 @@
 package com.pli.codes.architectureacrobat.controller;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.pli.codes.architectureacrobat.AnimationData;
+import com.pli.codes.architectureacrobat.animation.AnimationData;
 
 public class StandingState implements PlayerState {
 
@@ -26,8 +25,8 @@ public class StandingState implements PlayerState {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        stateTime += Gdx.graphics.getDeltaTime();
+    public void render(SpriteBatch batch, float delta) {
+        stateTime += delta;
         TextureRegion currentFrame = AnimationData.IDLE.getAnimation().getKeyFrame(stateTime, true);
         if (currentFrame.isFlipX() != (playerController.getDirection() == -1)) {
             currentFrame.flip(true, false);

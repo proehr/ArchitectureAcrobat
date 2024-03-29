@@ -3,7 +3,7 @@ package com.pli.codes.architectureacrobat.controller;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.pli.codes.architectureacrobat.AnimationData;
+import com.pli.codes.architectureacrobat.animation.AnimationData;
 
 public class JumpingState implements PlayerState {
 
@@ -54,13 +54,13 @@ public class JumpingState implements PlayerState {
 
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, float delta) {
         TextureRegion currentFrame;
         if (playerController.getVelocityY() >= 0) {
-            stateTimeJump += Gdx.graphics.getDeltaTime();
+            stateTimeJump += delta;
             currentFrame = AnimationData.JUMP.getAnimation().getKeyFrame(stateTimeJump, false);
         } else {
-            stateTimeFall += Gdx.graphics.getDeltaTime();
+            stateTimeFall += delta;
             currentFrame = AnimationData.FALL.getAnimation().getKeyFrame(stateTimeFall, false);
         }
         if (currentFrame.isFlipX() != (playerController.getDirection() == -1)) {
