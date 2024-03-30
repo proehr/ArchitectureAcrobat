@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Platform extends Rectangle {
 
-    private final Map<Vector2, Texture> textures;
+    protected final Map<Vector2, Texture> textures;
 
     public Platform(
         @JsonProperty("x") float x,
@@ -18,7 +18,11 @@ public class Platform extends Rectangle {
         @JsonProperty("height") float height
     ) {
         super(x * 32, y * 32, width * 32, height * 32);
-        textures = PlatformUtil.preparePlatformTextures(width, height);
+        textures = prepareTextures(width, height);
+    }
+
+    protected Map<Vector2, Texture> prepareTextures(float width, float height) {
+        return PlatformUtil.preparePlatformTextures(width, height);
     }
 
     public void render(SpriteBatch batch, float delta) {

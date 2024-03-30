@@ -9,6 +9,7 @@ import com.cyphercove.gdxtween.targettweens.Vector2Tween;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pli.codes.architectureacrobat.Tween;
 import com.pli.codes.architectureacrobat.animation.AnimationData;
+import com.pli.codes.architectureacrobat.level.MovablePlatform;
 import com.pli.codes.architectureacrobat.level.Platform;
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class Button implements Interactable {
 
     private final Rectangle bounds;
-    private final Platform platform;
+    private final MovablePlatform platform;
     private final Vector2 platformPosition;
     private final Vector2Tween tween;
 
@@ -25,7 +26,7 @@ public class Button implements Interactable {
 
     public Button(
         @JsonProperty("bounds") Rectangle bounds,
-        @JsonProperty("platform") Platform platform,
+        @JsonProperty("platform") MovablePlatform platform,
         @JsonProperty("endPosition") Vector2 endPosition
     ) {
         this.bounds = new Rectangle(bounds.x * 32, bounds.y * 32, bounds.width * 32, bounds.height * 32);

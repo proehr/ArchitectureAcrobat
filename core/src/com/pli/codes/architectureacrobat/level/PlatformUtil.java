@@ -90,4 +90,61 @@ public class PlatformUtil {
         }
         return scaledPlatforms;
     }
+
+    public static Map<Vector2, Texture> prepareMovablePlatformTextures(float width, float height) {
+        Map<Vector2, Texture> textures = new HashMap<>();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int textureId = selectMovablePlatformTexture(x, y, (int) width, (int) height);
+                textures.put(new Vector2(32f * x, 32f * y), PLATFORM_TEXTURES.get(textureId));
+            }
+        }
+        return textures;
+    }
+
+    private static int selectMovablePlatformTexture(int x, int y, int platformAmountX, int platformAmountY) {
+        if (platformAmountX == 1) {
+            if (y == 0) {
+                return PlatformType.MOVABLE_SINGLE_COLUMN_BOTTOM.getTextureId();
+            }
+            if (y == platformAmountY - 1) {
+                return PlatformType.MOVABLE_SINGLE_COLUMN_TOP.getTextureId();
+            }
+            return PlatformType.MOVABLE_SINGLE_COLUMN_CENTER.getTextureId();
+        }
+        if (platformAmountY == 1) {
+            if (x == 0) {
+                return PlatformType.MOVABLE_SINGLE_ROW_LEFT.getTextureId();
+            }
+            if (x == platformAmountX - 1) {
+                return PlatformType.MOVABLE_SINGLE_ROW_RIGHT.getTextureId();
+            }
+            return PlatformType.MOVABLE_SINGLE_ROW_CENTER.getTextureId();
+        }
+        if (x == 0 && y == 0) {
+            return PlatformType.MOVABLE_BOTTOM_LEFT_CORNER.getTextureId();
+        }
+        if (x == platformAmountX - 1 && y == 0) {
+            return PlatformType.MOVABLE_BOTTOM_RIGHT_CORNER.getTextureId();
+        }
+        if (x == 0 && y == platformAmountY - 1) {
+            return PlatformType.MOVABLE_TOP_LEFT_CORNER.getTextureId();
+        }
+        if (x == platformAmountX - 1 && y == platformAmountY - 1) {
+            return PlatformType.MOVABLE_TOP_RIGHT_CORNER.getTextureId();
+        }
+        if (x == 0) {
+            return PlatformType.MOVABLE_LEFT_EDGE.getTextureId();
+        }
+        if (x == platformAmountX - 1) {
+            return PlatformType.MOVABLE_RIGHT_EDGE.getTextureId();
+        }
+        if (y == 0) {
+            return PlatformType.MOVABLE_BOTTOM_EDGE.getTextureId();
+        }
+        if (y == platformAmountY - 1) {
+            return PlatformType.MOVABLE_TOP_EDGE.getTextureId();
+        }
+        return PlatformType.MOVABLE_CENTER.getTextureId();
+    }
 }
