@@ -16,7 +16,7 @@ public class LevelManager implements PropertyChangeListener {
     @Getter
     private Level currentLevel;
 
-    private int currentLevelIndex = 1;
+    private int currentLevelIndex = 0;
 
     public LevelManager(PlayerController playerController) {
         this.playerController = playerController;
