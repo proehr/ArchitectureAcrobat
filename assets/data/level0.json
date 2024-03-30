@@ -1,6 +1,6 @@
 {
-  "playerStartX": 0,
-  "playerStartY": 32,
+  "playerStartX": 1,
+  "playerStartY": 1,
   "target": {
     "type": "target",
     "bounds": {

@@ -57,11 +57,15 @@ public class GameApplication extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Update and render the player controller
         float delta = Gdx.graphics.getDeltaTime();
+        Tween.getInstance().step(delta);
+
+        // update all components
+        levelManager.getCurrentLevel().update(delta);
         inputHandler.update();
         playerController.update(delta);
 
+        // render all components
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         levelManager.getCurrentLevel().render(batch, delta);

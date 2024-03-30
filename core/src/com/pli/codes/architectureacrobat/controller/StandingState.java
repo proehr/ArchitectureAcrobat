@@ -35,7 +35,4 @@ public class StandingState implements PlayerState {
             playerController.getCharacterBounds().getY(), 100, 74);
     }
 
-    @Override
-    public void handleInput(int keycode, boolean isKeyDown) {
-    }
 }

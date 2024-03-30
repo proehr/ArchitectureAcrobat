@@ -13,7 +13,7 @@ import lombok.Setter;
 public class PlayerController {
 
     public static final float GRAVITY = -1000F;
-    private List<Rectangle> platforms;
+    private List<? extends Rectangle> platforms;
 
     @Getter
     private PropertyChangeSupport onPositionChange = new PropertyChangeSupport(this);
@@ -33,7 +33,7 @@ public class PlayerController {
         this.currentState = new StandingState(this);
     }
 
-    public void reset(float startX, float startY, List<Rectangle> platforms) {
+    public void reset(float startX, float startY, List<? extends Rectangle> platforms) {
         Arrays.stream(onPositionChange.getPropertyChangeListeners()).forEach(onPositionChange::removePropertyChangeListener);
         this.platforms = platforms;
         this.characterBounds.x = startX;
@@ -95,7 +95,7 @@ public class PlayerController {
         for (Rectangle rectangle : platforms) {
             if (characterBounds.overlaps(rectangle)) {
                 if (direction < 0) {
-                    characterBounds.x = (int) (rectangle.x + rectangle.width + 0.01f);
+                    characterBounds.x = rectangle.x + rectangle.width + 0.01f;
                 } else {
                     characterBounds.x = rectangle.x - characterBounds.width - 0.01f;
                 }
@@ -109,7 +109,7 @@ public class PlayerController {
         for (Rectangle rectangle : platforms) {
             if (characterBounds.overlaps(rectangle)) {
                 if (velocityY < 0) {
-                    characterBounds.y = (int) (rectangle.y + rectangle.height + 0.01f);
+                    characterBounds.y = rectangle.y + rectangle.height + 0.01f;
                     isJumping = false;
                 } else {
                     characterBounds.y = rectangle.y - characterBounds.height - 0.01f;

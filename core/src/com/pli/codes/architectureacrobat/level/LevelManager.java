@@ -16,7 +16,7 @@ public class LevelManager implements PropertyChangeListener {
     @Getter
     private Level currentLevel;
 
-    private int currentLevelIndex = 0;
+    private int currentLevelIndex = 1;
 
     public LevelManager(PlayerController playerController) {
         this.playerController = playerController;
@@ -33,7 +33,8 @@ public class LevelManager implements PropertyChangeListener {
     private void loadNextLevel() {
         currentLevelIndex++;
         if (currentLevelIndex >= LevelName.values().length) {
-            throw new RuntimeException("No more levels to load");
+            Gdx.app.exit();
+            System.exit(-1);
         }
         loadLevel(LevelName.values()[currentLevelIndex].getFileName());
     }

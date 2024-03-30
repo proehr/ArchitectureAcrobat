@@ -10,6 +10,7 @@ public enum SpriteSheet {
     PLAYER_ONE("animation-sheet-1.png", 7, 16),
     PLAYER_TWO("animation-sheet-2.png", 7, 10),
     LEVEL_TARGET("Entry.png", 8, 1),
+    BUTTON("button.png", 4, 1)
     ;
 
     private final Texture sheetTexture;

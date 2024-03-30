@@ -24,16 +24,12 @@ public class PlatformUtil {
         }
     }
 
-    public static Map<Vector2, Texture> preparePlatformTextures(List<Rectangle> platforms) {
+    public static Map<Vector2, Texture> preparePlatformTextures(float width, float height) {
         Map<Vector2, Texture> textures = new HashMap<>();
-        for (Rectangle platform : platforms) {
-            for (int x = 0; x < platform.getWidth(); x++) {
-                for (int y = 0; y < platform.getHeight(); y++) {
-                    float xPos = (platform.x + x) * 32;
-                    float yPos = (platform.y + y) * 32;
-                    int textureId = selectTexture(x, y, (int) platform.getWidth(), (int) platform.getHeight());
-                    textures.put(new Vector2(xPos, yPos), PLATFORM_TEXTURES.get(textureId));
-                }
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int textureId = selectTexture(x, y, (int) width, (int) height);
+                textures.put(new Vector2(32f * x, 32f * y), PLATFORM_TEXTURES.get(textureId));
             }
         }
         return textures;
@@ -94,5 +90,4 @@ public class PlatformUtil {
         }
         return scaledPlatforms;
     }
-
 }

@@ -12,6 +12,7 @@ public enum AnimationData {
     JUMP(SpriteSheet.PLAYER_ONE, 16, 17, 0.2f),
     FALL(SpriteSheet.PLAYER_ONE, 22, 23, 0.2f),
     TARGET_OPEN(SpriteSheet.LEVEL_TARGET, 0, 4, 0.3f),
+    BUTTON_PRESS(SpriteSheet.BUTTON, 0, 3, 0.2f)
     ;
 
     private final Animation<TextureRegion> animation;

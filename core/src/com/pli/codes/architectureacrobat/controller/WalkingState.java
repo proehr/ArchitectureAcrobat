@@ -21,18 +21,16 @@ public class WalkingState implements PlayerState {
 
     @Override
     public void update(float delta) {
-        // Update the player's horizontal position based on walking speed
-        float newX =
-            playerController.getCharacterBounds().getX() + WALK_SPEED * delta * playerController.getDirection();
-        // Ensure the player stays within the screen bounds
-        if (newX >= 0 && newX <= Gdx.graphics.getWidth()) {
-            playerController.setX(newX);
-        }
-
         playerController.setVelocityY(playerController.getVelocityY() + PlayerController.GRAVITY * delta);
         playerController.setY(playerController.getCharacterBounds().getY() + playerController.getVelocityY() * delta);
         if (playerController.getVelocityY() < 0) {
             playerController.setCurrentState(new JumpingState(playerController, false));
+        }
+
+        float newX = playerController.getCharacterBounds().getX() + WALK_SPEED * delta * playerController.getDirection();
+        // Ensure the player stays within the screen bounds
+        if (newX >= 0 && newX <= Gdx.graphics.getWidth() - playerController.getCharacterBounds().getWidth()) {
+            playerController.setX(newX);
         }
     }
 
@@ -47,7 +45,4 @@ public class WalkingState implements PlayerState {
             playerController.getCharacterBounds().getY(), 100, 74);
     }
 
-    @Override
-    public void handleInput(int keycode, boolean isKeyDown) {
-    }
 }

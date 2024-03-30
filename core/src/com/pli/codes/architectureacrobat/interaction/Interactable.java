@@ -5,17 +5,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.pli.codes.architectureacrobat.level.Target;
+import com.pli.codes.architectureacrobat.level.Platform;
+import java.util.Collections;
+import java.util.List;
 
 @JsonTypeInfo(use = Id.NAME, property = "type")
 @JsonSubTypes({
-    @Type(value = Target.class, name = "target")
+    @Type(value = Target.class, name = "target"),
+    @Type(value = Button.class, name = "button")
 })
-public abstract class Interactable {
+public interface Interactable {
 
-    public abstract void render(SpriteBatch batch, float delta);
+    default void update(float delta) {
+    }
 
-    public abstract boolean detectInteraction(Object newValue);
+    void render(SpriteBatch batch, float delta);
 
-    public abstract void handleInteraction();
+    boolean detectInteraction(Object newValue);
+
+    void handleInteraction(Object newValue);
+
+    default List<Platform> getPlatforms() {
+        return Collections.emptyList();
+    }
 }

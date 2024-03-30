@@ -46,7 +46,7 @@ public class JumpingState implements PlayerState {
         if (playerController.isMoving()) {
             float newX = playerController.getCharacterBounds().getX()
                 + WalkingState.WALK_SPEED * delta * playerController.getDirection();
-            if (newX >= 0 && newX <= Gdx.graphics.getWidth()) {
+            if (newX >= 0 && newX <= Gdx.graphics.getWidth() - playerController.getCharacterBounds().getWidth()) {
                 playerController.setX(newX);
             }
         }
@@ -70,8 +70,4 @@ public class JumpingState implements PlayerState {
             playerController.getCharacterBounds().getY(), 100, 74);
     }
 
-    @Override
-    public void handleInput(int keycode, boolean isKeyDown) {
-
-    }
 }

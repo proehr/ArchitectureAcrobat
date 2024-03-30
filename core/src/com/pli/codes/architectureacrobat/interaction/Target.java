@@ -1,4 +1,4 @@
-package com.pli.codes.architectureacrobat.level;
+package com.pli.codes.architectureacrobat.interaction;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -6,12 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pli.codes.architectureacrobat.animation.AnimationData;
-import com.pli.codes.architectureacrobat.interaction.Interactable;
 import java.beans.PropertyChangeSupport;
 import lombok.Getter;
 
 
-public class Target extends Interactable {
+public class Target implements Interactable {
 
     private static final Texture TARGET_TOP_LEFT_PLATFORM = new Texture("platforms/IndustrialTile_58.png");
     private static final Texture TARGET_TOP_RIGHT_PLATFORM = new Texture("platforms/IndustrialTile_60.png");
@@ -52,7 +51,7 @@ public class Target extends Interactable {
         return false;
     }
 
-    public void handleInteraction() {
+    public void handleInteraction(Object newValue) {
         targetReached = true;
     }
 
