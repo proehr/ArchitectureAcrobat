@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.pli.codes.architectureacrobat.audio.AudioController;
+import com.pli.codes.architectureacrobat.audio.MusicTrack;
 import com.pli.codes.architectureacrobat.controller.PlayerController;
 import com.pli.codes.architectureacrobat.input.InputHandler;
 import com.pli.codes.architectureacrobat.level.LevelManager;
@@ -42,7 +44,9 @@ public class GameApplication extends ApplicationAdapter {
 
         // Initialize level manager
         levelManager = new LevelManager(playerController);
-
+        AudioController.getInstance().initialize();
+        AudioController.getInstance().getMusic(MusicTrack.BACKGROUND_MUSIC, true, 0.5f).play();
+        AudioController.getInstance().getMusic(MusicTrack.BACKGROUND_NOISE, true, 0.25f).play();
     }
 
     @Override
@@ -69,6 +73,9 @@ public class GameApplication extends ApplicationAdapter {
         batch.begin();
         batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         levelManager.getCurrentLevel().render(batch, delta);
+        if (levelManager.isLastLevel()) {
+            levelManager.renderEndScreen(batch);
+        }
         playerController.render(batch, delta);
         batch.end();
     }

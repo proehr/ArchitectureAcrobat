@@ -8,29 +8,34 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class PlayerController {
 
     public static final float GRAVITY = -1000F;
-    private List<? extends Rectangle> platforms;
+    @Getter
+    @Setter
+    private float velocityY;
+    @Getter
+    @Setter
+    private boolean moving;
+    @Getter
+    @Setter
+    private boolean jumping;
+
+    @Getter
+    private Rectangle characterBounds;
+    @Getter
+    private int direction;
 
     @Getter
     private PropertyChangeSupport onPositionChange = new PropertyChangeSupport(this);
 
+    private List<? extends Rectangle> platforms;
     private PlayerState currentState;
-
-    // Player position
-    private Rectangle characterBounds;
-    // Vertical velocity
-    private float velocityY;
-    private int direction;
-    private boolean moving;
-    private boolean isJumping;
 
     public PlayerController() {
         this.characterBounds = new Rectangle(0, 0, 50, 63);
         this.currentState = new StandingState(this);
+        this.currentState.onEnter();
     }
 
     public void reset(float startX, float startY, List<? extends Rectangle> platforms) {
@@ -38,7 +43,7 @@ public class PlayerController {
         this.platforms = platforms;
         this.characterBounds.x = startX;
         this.characterBounds.y = startY;
-        this.currentState = new StandingState(this);
+        setCurrentState(new StandingState(this));
     }
 
     public void update(float delta) {
@@ -49,22 +54,28 @@ public class PlayerController {
         currentState.render(batch, delta);
     }
 
+    public void setCurrentState(PlayerState currentState) {
+        this.currentState.onExit();
+        this.currentState = currentState;
+        this.currentState.onEnter();
+    }
+
     public void jump() {
         if (canJump()) {
-            currentState = new JumpingState(this, true);
+            setCurrentState(new JumpingState(this, true));
         }
     }
 
     private boolean canJump() {
-        return !isJumping;
+        return !jumping;
     }
 
     public void moveLeft() {
         if (canMove()) {
             direction = -1;
             moving = true;
-            if (!isJumping && currentState instanceof StandingState) {
-                currentState = new WalkingState(this);
+            if (!jumping && currentState instanceof StandingState) {
+                setCurrentState(new WalkingState(this));
             }
         }
     }
@@ -73,8 +84,8 @@ public class PlayerController {
         if (canMove()) {
             direction = 1;
             moving = true;
-            if (!isJumping && currentState instanceof StandingState) {
-                currentState = new WalkingState(this);
+            if (!jumping && currentState instanceof StandingState) {
+                setCurrentState(new WalkingState(this));
             }
         }
     }
@@ -86,7 +97,7 @@ public class PlayerController {
     public void stopMove() {
         moving = false;
         if (currentState instanceof WalkingState) {
-            currentState = new StandingState(this);
+            setCurrentState(new StandingState(this));
         }
     }
 
@@ -110,7 +121,7 @@ public class PlayerController {
             if (characterBounds.overlaps(rectangle)) {
                 if (velocityY < 0) {
                     characterBounds.y = rectangle.y + rectangle.height + 0.01f;
-                    isJumping = false;
+                    jumping = false;
                 } else {
                     characterBounds.y = rectangle.y - characterBounds.height - 0.01f;
                 }

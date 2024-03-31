@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.pli.codes.architectureacrobat.animation.AnimationData;
+import com.pli.codes.architectureacrobat.audio.AudioController;
+import com.pli.codes.architectureacrobat.audio.SoundTrack;
 
 public class WalkingState implements PlayerState {
 
-    //TODO: write config into a class/config file
+    // TODO: write config into a class/config file
     public static final float WALK_SPEED = 300f;
 
     private final PlayerController playerController;
@@ -15,8 +17,13 @@ public class WalkingState implements PlayerState {
     private float stateTime = 0;
 
     public WalkingState(PlayerController playerController) {
-        playerController.setMoving(true);
         this.playerController = playerController;
+    }
+
+    @Override
+    public void onEnter() {
+        playerController.setMoving(true);
+        AudioController.getInstance().getSound(SoundTrack.WALK).loop(1f);
     }
 
     @Override
@@ -43,6 +50,11 @@ public class WalkingState implements PlayerState {
         }
         batch.draw(currentFrame, playerController.getCharacterBounds().getX() - 25,
             playerController.getCharacterBounds().getY(), 100, 74);
+    }
+
+    @Override
+    public void onExit() {
+        AudioController.getInstance().getSound(SoundTrack.WALK).stop();
     }
 
 }

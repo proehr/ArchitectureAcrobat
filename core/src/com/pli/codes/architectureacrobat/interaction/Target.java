@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pli.codes.architectureacrobat.animation.AnimationData;
+import com.pli.codes.architectureacrobat.audio.AudioController;
+import com.pli.codes.architectureacrobat.audio.SoundTrack;
 import java.beans.PropertyChangeSupport;
 import lombok.Getter;
 
@@ -34,6 +36,7 @@ public class Target implements Interactable {
             stateTime += delta;
         }
         if (stateTime >= AnimationData.TARGET_OPEN.getAnimation().getAnimationDuration() && targetReached) {
+            AudioController.getInstance().getSound(SoundTrack.SUCCESS).stop();
             onTargetDoorOpened.firePropertyChange("levelComplete", false, true);
         }
         TextureRegion currentFrame = AnimationData.TARGET_OPEN.getAnimation().getKeyFrame(stateTime, false);
@@ -52,7 +55,10 @@ public class Target implements Interactable {
     }
 
     public void handleInteraction(Object newValue) {
-        targetReached = true;
+        if (!targetReached) {
+            targetReached = true;
+            AudioController.getInstance().getSound(SoundTrack.SUCCESS).play();
+        }
     }
 
 }

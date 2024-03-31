@@ -1,6 +1,7 @@
 package com.pli.codes.architectureacrobat.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pli.codes.architectureacrobat.controller.PlayerController;
 import java.beans.PropertyChangeEvent;
@@ -12,6 +13,7 @@ public class LevelManager implements PropertyChangeListener {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private final PlayerController playerController;
+    private final EndScreen endScreen = new EndScreen();
 
     @Getter
     private Level currentLevel;
@@ -56,10 +58,19 @@ public class LevelManager implements PropertyChangeListener {
         }
     }
 
+    public boolean isLastLevel() {
+        return currentLevelIndex == LevelName.values().length - 1;
+    }
+
+    public void renderEndScreen(SpriteBatch batch) {
+        endScreen.render(batch);
+    }
+
     @Getter
-    public enum LevelName {
+    private enum LevelName {
         LEVEL0("level0"),
         LEVEL1("level1"),
+        FINAL_LEVEL("final_level")
         ;
         private final String fileName;
 

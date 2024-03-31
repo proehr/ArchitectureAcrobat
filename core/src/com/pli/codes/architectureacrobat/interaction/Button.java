@@ -9,6 +9,8 @@ import com.cyphercove.gdxtween.targettweens.Vector2Tween;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.pli.codes.architectureacrobat.Tween;
 import com.pli.codes.architectureacrobat.animation.AnimationData;
+import com.pli.codes.architectureacrobat.audio.AudioController;
+import com.pli.codes.architectureacrobat.audio.SoundTrack;
 import com.pli.codes.architectureacrobat.level.MovablePlatform;
 import com.pli.codes.architectureacrobat.level.Platform;
 import java.util.Arrays;
@@ -67,6 +69,7 @@ public class Button implements Interactable {
         if (!buttonPressed && !tween.isStarted()) {
             buttonPressed = true;
             tween.start(Tween.getInstance());
+            AudioController.getInstance().getSound(SoundTrack.BUTTON_CLICK).play();
         }
 
     }

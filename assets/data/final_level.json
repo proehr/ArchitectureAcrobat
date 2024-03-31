@@ -1,0 +1,22 @@
+{
+  "playerStartX": 1,
+  "playerStartY": 1,
+  "target": {
+    "type": "target",
+    "bounds": {
+      "x": 29,
+      "y": 1,
+      "width": 2,
+      "height": 3
+    }
+  },
+  "interactables": [],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 60,
+      "height": 1
+    }
+  ]
+}
