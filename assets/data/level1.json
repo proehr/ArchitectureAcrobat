@@ -2,7 +2,7 @@
   "playerStartX": 29,
   "playerStartY": 3,
   "target": {
-    "type": "target",
+    "class": "com.pli.codes.architectureacrobat.interaction.InteractableData",
     "bounds": {
       "x": 56,
       "y": 26,
@@ -12,7 +12,7 @@
   },
   "interactables": [
     {
-      "type": "button",
+      "class": "com.pli.codes.architectureacrobat.interaction.ButtonData",
       "bounds": {
         "x": 55,
         "y": 3,
@@ -25,13 +25,11 @@
         "width": 7,
         "height": 2
       },
-      "endPosition": {
-        "x": 36,
-        "y": 5
-      }
+      "endPosX": 36,
+      "endPosY": 5
     },
     {
-      "type": "button",
+      "class": "com.pli.codes.architectureacrobat.interaction.ButtonData",
       "bounds": {
         "x": 11,
         "y": 7,
@@ -44,13 +42,11 @@
         "width": 4,
         "height": 2
       },
-      "endPosition": {
-        "x": 10,
-        "y": 16
-      }
+      "endPosX": 10,
+      "endPosY": 16
     },
     {
-      "type": "button",
+      "class": "com.pli.codes.architectureacrobat.interaction.ButtonData",
       "bounds": {
         "x": 55,
         "y": 20,
@@ -63,10 +59,8 @@
         "width": 1,
         "height": 4
       },
-      "endPosition": {
-        "x": 53,
-        "y": 30
-      }
+      "endPosX": 53,
+      "endPosY": 30
     }
   ],
   "platforms": [

@@ -2,7 +2,7 @@
   "playerStartX": 1,
   "playerStartY": 1,
   "target": {
-    "type": "target",
+    "class": "com.pli.codes.architectureacrobat.interaction.InteractableData",
     "bounds": {
       "x": 29,
       "y": 1,
