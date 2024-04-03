@@ -46,7 +46,7 @@ public class JumpingState implements PlayerState {
         if (playerController.isMoving()) {
             float newX = playerController.getCharacterBounds().getX()
                 + WalkingState.WALK_SPEED * delta * playerController.getDirection();
-            if (newX >= 0 && newX <= Gdx.graphics.getWidth() - playerController.getCharacterBounds().getWidth()) {
+            if (newX >= 0 && newX <= 1920 - playerController.getCharacterBounds().getWidth()) {
                 playerController.setX(newX);
             }
         }

@@ -24,11 +24,11 @@ public class LevelManager implements Observer {
     }
 
     private void loadNextLevel() {
-        currentLevelIndex++;
-        if (currentLevelIndex >= LevelName.values().length) {
+        if (currentLevelIndex == LevelName.values().length - 1) {
             Gdx.app.exit();
             return;
         }
+        currentLevelIndex++;
         loadLevel(LevelName.values()[currentLevelIndex].getFileName());
     }
 

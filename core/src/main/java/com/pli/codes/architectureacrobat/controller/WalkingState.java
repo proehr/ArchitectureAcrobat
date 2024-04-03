@@ -36,7 +36,7 @@ public class WalkingState implements PlayerState {
 
         float newX = playerController.getCharacterBounds().getX() + WALK_SPEED * delta * playerController.getDirection();
         // Ensure the player stays within the screen bounds
-        if (newX >= 0 && newX <= Gdx.graphics.getWidth() - playerController.getCharacterBounds().getWidth()) {
+        if (newX >= 0 && newX <= 1920 - playerController.getCharacterBounds().getWidth()) {
             playerController.setX(newX);
         }
     }

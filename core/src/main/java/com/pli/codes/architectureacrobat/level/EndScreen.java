@@ -22,13 +22,13 @@ public class EndScreen {
         font.draw(
             batch,
             "Congratulations, you have completed the game!",
-            (Gdx.graphics.getWidth() - congratsText.width) / 2f,
-            (Gdx.graphics.getHeight() - congratsText.height) / 2f
+            (1920 - congratsText.width) / 2f,
+            (1080 - congratsText.height) / 2f
         );
         font.draw(
             batch,
             "Quit",
-            (Gdx.graphics.getWidth() - quitText.width) / 2f,
+            (1920 - quitText.width) / 2f,
             176
         );
     }

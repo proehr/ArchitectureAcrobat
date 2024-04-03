@@ -32,7 +32,7 @@ public class GameApplication extends ApplicationAdapter {
     @Override
     public void create() {
         viewport = new FitViewport(1920, 1080);
-        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         backgroundTexture = new Texture("background.png");
 
@@ -53,7 +53,11 @@ public class GameApplication extends ApplicationAdapter {
         AudioController.getInstance().getMusic(MusicTrack.BACKGROUND_NOISE, true, 0.25f).play();
     }
 
-    
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+    }
+
     @Override
     public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
