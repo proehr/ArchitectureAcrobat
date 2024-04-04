@@ -1,0 +1,40 @@
+{
+  "playerStartX": 1,
+  "playerStartY": 1,
+  "target": {
+    "class": "com.pli.codes.architectureacrobat.interaction.InteractableData",
+    "bounds": {
+      "x": 57,
+      "y": 1,
+      "width": 2,
+      "height": 3
+    }
+  },
+  "interactables": [
+    {
+      "class": "com.pli.codes.architectureacrobat.interaction.ButtonData",
+      "bounds": {
+        "x": 20,
+        "y": 1,
+        "width": 1,
+        "height": 1
+      },
+      "platform": {
+        "x": 28,
+        "y": 1,
+        "width": 4,
+        "height": 10
+      },
+      "endPosX": 28,
+      "endPosY": 4
+    }
+  ],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 60,
+      "height": 1
+    }
+  ]
+}
