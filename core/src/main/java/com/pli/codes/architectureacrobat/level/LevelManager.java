@@ -62,11 +62,12 @@ public class LevelManager implements Observer {
 
     @Getter
     private enum LevelName {
-        LEVEL0("level0"),
-        LEVEL1("level1"),
-        LEVEL2("level2"),
-        LEVEL3("level3"),
-        FINAL_LEVEL("final_level");
+        LEVEL0("levels/00_first_jump"),
+        LEVEL1("levels/10_serpentines"),
+        LEVEL2("levels/20_first_button"),
+        LEVEL3("levels/30_three_buttons"),
+        LEVEL4("levels/40_more_jumps"),
+        FINAL_LEVEL("levels/99_the_end");
         private final String fileName;
 
         LevelName(String fileName) {
