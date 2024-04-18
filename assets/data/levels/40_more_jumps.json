@@ -1,0 +1,125 @@
+{
+  "playerStartX": 1,
+  "playerStartY": 1,
+  "target": {
+    "class": "com.pli.codes.architectureacrobat.interaction.InteractableData",
+    "bounds": {
+      "x": 58,
+      "y": 31,
+      "width": 2,
+      "height": 3
+    }
+  },
+  "interactables": [],
+  "platforms": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 60,
+      "height": 1
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "width": 1,
+      "height": 33
+    },
+    {
+      "x": 59,
+      "y": 1,
+      "width": 1,
+      "height": 29
+    },
+    {
+      "x": 58,
+      "y": 30,
+      "width": 2,
+      "height": 1
+    },
+
+    {
+      "x": 7,
+      "y": 4,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 14,
+      "y": 9,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 15,
+      "y": 9,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 21,
+      "y": 14,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 22,
+      "y": 14,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 28,
+      "y": 19,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 29,
+      "y": 19,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 35,
+      "y": 24,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 36,
+      "y": 24,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 42,
+      "y": 29,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "x": 43,
+      "y": 29,
+      "width": 1,
+      "height": 2
+    },
+
+    {
+      "x": 51,
+      "y": 27,
+      "width": 1,
+      "height": 1
+    }
+  ]
+}
